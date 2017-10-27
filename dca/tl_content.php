@@ -46,6 +46,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['readfromurl_source'] = array
         	'inputType'				  => 'radio',
         	'options'				  => array('rfu_content','rfu_serialized','rfu_xml'),
         	'reference'				  => &$GLOBALS['TL_LANG']['tl_content']['readfromurl_source'],
+            'sql'                     => "varchar(255) NOT NULL default '0'",
         	'eval'                    => array('submitOnChange' => true)
         );
 
@@ -54,6 +55,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['readfromurl'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_content']['readfromurl'],
             'inputType'               => 'text',
             'exclude'                 => true,
+            'sql'                     => "varchar(255) NOT NULL default ''",
             'eval'                    => array('rgxp' => 'url', 'mandatory' => true, 'maxlength' => 255)
         );        
 
@@ -63,19 +65,22 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['readfromurl_template'] = array
         	'default'                 => 'rfu_content',
         	'exclude'                 => true,
         	'inputType'               => 'select',
-        	'options'                 => $this->getTemplateGroup('rfu_')
+        	'options'                 => $this->getTemplateGroup('rfu_'),
+            'sql'                     => "char(255) NOT NULL default ''"
         );
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['encode_utf8'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_content']['encode_utf8'],
             'inputType'               => 'checkbox',
-            'exclude'                 => true
+            'exclude'                 => true,
+            'sql'                     => "char(1) NOT NULL default ''"
         );
         
 $GLOBALS['TL_DCA']['tl_content']['fields']['decode_utf8'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_content']['decode_utf8'],
             'inputType'               => 'checkbox',
-            'exclude'                 => true
+            'exclude'                 => true,
+            'sql'                     => "char(1) NOT NULL default ''"
         );
