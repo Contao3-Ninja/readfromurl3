@@ -26,8 +26,8 @@
  * @filesource
  */
 
-$GLOBALS['TL_CTE']['includes']['readfromurl'] = 'ReadFromUrl';
+$GLOBALS['TL_CTE']['includes']['readfromurl'] = 'BugBuster\RFU3\ReadFromUrl';
 
 // New Callback
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('ReadFromUrl', 'replaceInsertTags');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BugBuster\RFU3\ReadFromUrl', 'replaceInsertTagsRfu3');
  

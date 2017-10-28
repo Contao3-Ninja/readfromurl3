@@ -1,22 +1,7 @@
 <?php 
 
 /**
- * TYPOlight webCMS
- * Copyright (C) 2005 Leo Feyer
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at http://www.gnu.org/licenses/.
+ * Contao Open Source CMS, Copyright (C) 2005-2017 Leo Feyer
  *
  * PHP version 5
  * @copyright  Christopher Pleines 2005
@@ -24,8 +9,16 @@
  * @package    Frontend
  * @license    LGPL
  * @filesource
+ * 
+ * Module readfromurl3
+ * @copyright  Glen Langer 2017 <http://contao.ninja>
+ * @author     Glen Langer (BugBuster)
  */
 
+/**
+ * Run in a custom namespace, so the class can be replaced
+ */
+namespace BugBuster\RFU3;
 
 /**
  * Class ReadFromUrl 
@@ -34,7 +27,7 @@
  * @author     Christopher Pleines 
  * @package    Controller
  */
-class ReadFromUrl extends ContentElement
+class ReadFromUrl extends \ContentElement
 {
 
 	/**
@@ -43,6 +36,27 @@ class ReadFromUrl extends ContentElement
 	 */
 	protected $strTemplate = 'rfu_content';
 
+    /**
+	 * Display a wildcard in the back end
+	 * @return string
+	 */
+	public function generate()
+	{
+	    if (TL_MODE == 'BE')
+	    {
+	        $objTemplate = new \BackendTemplate('be_wildcard');
+	        $objTemplate->wildcard = '### ReadFromUrl Module ###';
+	        return $objTemplate->parse();
+	    }
+	    return parent::generate();
+	}
+	
+	public function __construct($objElement=null, $strColumn='main')
+	{
+	    if ($objElement !== null)
+	        parent::__construct($objElement, $strColumn);
+	}
+	
 	/**
 	 * Compile module
 	 */
@@ -51,10 +65,10 @@ class ReadFromUrl extends ContentElement
         if ($this->readfromurl_template)
             $this->strTemplate = $this->readfromurl_template;
         
-        $this->Template = new FrontendTemplate($this->strTemplate);
+        $this->Template = new \FrontendTemplate($this->strTemplate);
         
         // Replace insert tags/entity decode
-        $this->url = html_entity_decode($this->replaceInsertTags($this->readfromurl));
+        $this->url = html_entity_decode($this->replaceInsertTagsIntern($this->readfromurl));
 
         switch ($this->readfromurl_source):
             case 'rfu_content':
@@ -122,11 +136,14 @@ class ReadFromUrl extends ContentElement
 	 * Replace Insert Tags
 	 * - {{request_vars}} => $GLOBALS['_REQUEST'] url-conformed	 
 	 */     
-    protected function replaceInsertTags($strTag) {
+    protected function replaceInsertTagsIntern($strTag) {
         $replace = http_build_query($GLOBALS['_REQUEST']);
         $replaced_string = str_replace('{{request_vars}}', $replace, $strTag);
         return $replaced_string;
     }        
     
+    public function replaceInsertTagsRfu3($strTag) {
+        return false; //TODO
+    }
 }
 
