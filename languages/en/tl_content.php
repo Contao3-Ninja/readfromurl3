@@ -34,7 +34,7 @@ $GLOBALS['TL_LANG']['tl_content']['readfromurl']            = array('URL', 'Plea
 $GLOBALS['TL_LANG']['tl_content']['encode_utf8']            = array('Encode UTF8 content', 'Encode the content to UTF8?');
 $GLOBALS['TL_LANG']['tl_content']['decode_utf8']            = array('Decode UTF8 content', 'Decode the content to UTF8?');
 
-$GLOBALS['TL_LANG']['tl_content']['readfromurl_source']     = array('Data format of the source', 'Please choose the data format. Content directly reads the content of the url, serialized array unserializes a serialized array and assigns it to the template, serialisiertes array hängt das deserialisiertes array an das template, XML assigns a <a href="http://en.php.net/simplexml" onclick="window.open(this.href); return false">SimpleXML</a> object to the template.');
+$GLOBALS['TL_LANG']['tl_content']['readfromurl_source']     = array('Data format of the source', 'Please choose the data format. Content directly reads the content of the url, serialized array unserializes a serialized array and assigns it to the template, XML assigns a <a href="http://en.php.net/simplexml" onclick="window.open(this.href); return false">SimpleXML</a> object to the template.');
 
 // Source Options
 $GLOBALS['TL_LANG']['tl_content']['readfromurl_source']['rfu_content']      = 'Content';

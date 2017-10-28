@@ -30,5 +30,5 @@
 /**
  * Content elements
  */
-$GLOBALS['TL_LANG']['CTE']['readfromurl']  = array('Von URL lesen', 'Dieses Element liest von einer definierten URL den Inhalt ein und gibt ihn aus.');
+$GLOBALS['TL_LANG']['CTE']['readfromurl']  = array('Von URL lesen', 'Dieses Content Element liest von einer definierten URL den Inhalt ein und gibt ihn aus.');
 
