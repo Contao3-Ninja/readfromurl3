@@ -35,6 +35,8 @@ class ReadFromUrl extends \ContentElement
 	 * @var string
 	 */
 	protected $strTemplate = 'rfu_content';
+	
+	protected $url = '';
 
     /**
 	 * Display a wildcard in the back end
@@ -54,7 +56,22 @@ class ReadFromUrl extends \ContentElement
 	public function __construct($objElement=null, $strColumn='main')
 	{
 	    if ($objElement !== null)
+	    {
 	        parent::__construct($objElement, $strColumn);
+	    }	        
+	}
+	
+	/**
+	 * Replace Insert Tags
+	 * - {{request_vars}} => $GLOBALS['_REQUEST'] url-conformed
+	 */
+	public function replaceInsertTagsRfu3($strTag)
+	{
+	    if ($strTag != 'request_vars')
+	    {
+	        return false; // nicht für uns
+	    }
+	    return http_build_query($GLOBALS['_REQUEST']);
 	}
 	
 	/**
@@ -63,12 +80,14 @@ class ReadFromUrl extends \ContentElement
 	protected function compile()
 	{
         if ($this->readfromurl_template)
+        {
             $this->strTemplate = $this->readfromurl_template;
+        }
         
         $this->Template = new \FrontendTemplate($this->strTemplate);
         
         // Replace insert tags/entity decode
-        $this->url = html_entity_decode($this->replaceInsertTagsIntern($this->readfromurl));
+        $this->url = html_entity_decode($this->replaceInsertTags($this->readfromurl));
 
         switch ($this->readfromurl_source):
             case 'rfu_content':
@@ -87,15 +106,20 @@ class ReadFromUrl extends \ContentElement
 	/**
 	 * Read raw data from $this->url
 	 */	
-	private function read_rawdata() {
-        $options = array( 'http' => array(
-            'max_redirects' => 10,          // stop after 10 redirects
-            'timeout'       => 120,         // timeout on response
-        ) );
+	private function read_rawdata() 
+	{
+        $options = array( 
+            'http' => array(
+                'max_redirects' => 10,          // stop after 10 redirects
+                'timeout'       => 120,         // timeout on response
+            ) 
+        );
         $context = stream_context_create( $options );
         $url_content = @file_get_contents($this->url, false, $context);
         if (!$url_content)
+        {
             $this->log('ReadFromURL: Could not read from URL ' . $this->url, 'ReadFromUrl read_rawdata()', TL_ERROR);
+        }
 
         return $url_content;
     }
@@ -103,7 +127,8 @@ class ReadFromUrl extends \ContentElement
 	/**
 	 * Process simple content
 	 */		
-	private function read_content() {
+	private function read_content() 
+	{
         $url_content = $this->read_rawdata();
         if ($this->encode_utf8) $url_content = utf8_encode($url_content);
         if ($this->decode_utf8) $url_content = utf8_decode($url_content);        
@@ -113,37 +138,30 @@ class ReadFromUrl extends \ContentElement
 	/**
 	 * Process serialized content
 	 */    
-	private function read_serialized() {
+	private function read_serialized() 
+	{
         $url_content = $this->read_rawdata();
         $arr = @unserialize($url_content);
         if (!$arr)
+        {
             $this->log('ReadFromURL: Could not unserialize Array/Object from ' . $this->url, 'ReadFromUrl read_serialized()', TL_ERROR);
+        }
         $this->Template->url_content = $arr;
     }
 
 	/**
 	 * Process XML content
 	 */     
-	private function read_xml() {
+	private function read_xml() 
+	{
         $url_content = $this->read_rawdata();
         $xml = @simplexml_load_string($url_content);
         if (!xml)
+        {
             $this->log('ReadFromURL: Could not read valid XML from ' . $this->url, 'ReadFromUrl read_xml()', TL_ERROR);
+        }
         $this->Template->url_content = $xml;
-    }
+    }   
 
-	/**
-	 * Replace Insert Tags
-	 * - {{request_vars}} => $GLOBALS['_REQUEST'] url-conformed	 
-	 */     
-    protected function replaceInsertTagsIntern($strTag) {
-        $replace = http_build_query($GLOBALS['_REQUEST']);
-        $replaced_string = str_replace('{{request_vars}}', $replace, $strTag);
-        return $replaced_string;
-    }        
-    
-    public function replaceInsertTagsRfu3($strTag) {
-        return false; //TODO
-    }
 }
 
