@@ -1,0 +1,42 @@
+{
+	"name":"bugbuster/readfromurl3",
+	"description":"Contao 3 content element reads the content from a defined URL and returns it.",
+	"keywords":["url","read","contao"],
+	"type":"contao-module",
+	"homepage":"http://contao.ninja",
+	"license":"LGPL-3.0+",
+	"authors":[
+		{
+			"name":"Glen Langer",
+			"homepage":"http://contao.ninja",
+			"role":"Developer"
+		}
+	],
+	"support":{
+		"issues":"https://github.com/BugBuster1701/readfromurl3/issues",
+		"irc":"irc://irc.freenode.org/contao.dev",
+		"source":"https://github.com/BugBuster1701/readfromurl3",
+		"forum":"https://community.contao.org/de/forumdisplay.php?119-Sonstige-Erweiterungen"
+	},
+	"require":{
+		"php": ">=5.6.0",
+		"contao/core": ">=3.5,<4",
+		"contao-community-alliance/composer-plugin": "*"
+	},
+	"autoload":{
+		"classmap":[""]
+	},
+	"replace":{
+		"contao-legacy/readfromurl":"self.version"
+	},
+	"extra":{
+		"contao":{
+			"sources":{
+				"src":"system/modules/readfromurl3"
+			}
+		},
+		"branch-alias": {
+			"dev-develop": "2.2.x-dev"
+		}
+	}
+}
