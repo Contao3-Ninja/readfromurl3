@@ -32,7 +32,7 @@
 	"extra":{
 		"contao":{
 			"sources":{
-				"src":"system/modules/readfromurl3"
+				"":"system/modules/readfromurl3"
 			}
 		},
 		"branch-alias": {
